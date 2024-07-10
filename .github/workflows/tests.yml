@@ -46,7 +46,7 @@ jobs:
       - name: Install poetry plugin
         run: python -m poetry self add "poetry-dynamic-versioning[plugin]"
       # Install test dependencies (tox) to the root (non-package install)
-      - name: Install dependencies
+      - name: Install test dependencies
         run: |
           python -m poetry install --no-root --only test
       - name: set full Python version in PY env var
@@ -60,9 +60,12 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
       # Build and install the package if it's Windows, to service shell-based tests
-      - if: ${{ matrix.os == 'windows-latest' }}
+      - name: Install binary on Windows
+        if: ${{ matrix.os == 'windows-latest' }}
         env:
           SKIP_PRE_BUILD: true
+        # Make `locust` available on the Windows shell by installing it with `pip`
+        # before running tests which invoke it in the `cmd` prompt
         run: |
           python -m poetry build
           python -m poetry self add "poetry-plugin-export"
