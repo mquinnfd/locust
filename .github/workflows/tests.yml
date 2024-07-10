@@ -65,7 +65,7 @@ jobs:
           SKIP_PRE_BUILD: true
         run: |
           python -m poetry build
-          pip install mypackage --no-index --find-links file:///dist/locust
+          pip install locust --no-index --find-links=dist
       - run: python -m poetry run tox -e ${{ matrix.tox }}
 
   lint_typecheck_test_webui:
