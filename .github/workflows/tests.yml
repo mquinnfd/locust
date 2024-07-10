@@ -65,7 +65,6 @@ jobs:
           SKIP_PRE_BUILD: true
         run: |
           python -m poetry build
-          rmdir /s /q dist
           pip install --upgrade --user --ignore-installed --find-links=dist locust
       - run: python -m poetry run tox -e ${{ matrix.tox }}
 
