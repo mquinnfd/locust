@@ -61,13 +61,14 @@ jobs:
         run: npm install -g yarn
       # Build and install the package if it's Windows, to service shell-based tests
       - if: ${{ matrix.os == 'windows-latest' }}
-        # env:
-        #   SKIP_PRE_BUILD: true
+        env:
+          SKIP_PRE_BUILD: true
         run: |
           python -m poetry build
           python -m poetry self add "poetry-plugin-export"
           python -m poetry export --without-hashes --format=requirements.txt > requirements.txt
           pip install -r requirements.txt
+          pip install poetry-core>=1.0.0
           pip install locust --no-index --find-links=dist
       - run: python -m poetry run tox -e ${{ matrix.tox }}
 
