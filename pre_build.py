@@ -14,7 +14,8 @@ def build() -> None:
         )
         exit(1)
     print("Building front end...")
-    subprocess.run(["make", "frontend_build"])
+    subprocess.run(["yarn", "webui:install"])
+    subprocess.run(["yarn", "webui:build"])
 
 
 if __name__ == "__main__":
