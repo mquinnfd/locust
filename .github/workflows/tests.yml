@@ -65,6 +65,9 @@ jobs:
           SKIP_PRE_BUILD: true
         run: |
           python -m poetry build
+          python -m poetry self add "poetry-plugin-export"
+          python -m poetry export --without-hashes --format=requirements.txt > requirements.txt
+          pip install -r requirements.txt
           pip install locust --no-index --find-links=dist
       - run: python -m poetry run tox -e ${{ matrix.tox }}
 
