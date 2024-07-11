@@ -14,16 +14,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: Windows, python: '3.12', os: windows-latest, tox: fail_fast_test_main, pre_build: false}
-          # - {name: Mac, python: '3.12', os: macos-latest, tox: fail_fast_test_main, pre_build: true}
-          - { name: "ruff", python: "3.11", os: ubuntu-latest, tox: "ruff", pre_build: true}
-          - { name: "mypy", python: "3.10", os: ubuntu-latest, tox: "mypy", pre_build: true}
+          - {name: Windows, python: '3.12', os: windows-latest, tox: fail_fast_test_main, skip_pre_build: "false" }
+          # - {name: Mac, python: '3.12', os: macos-latest, tox: fail_fast_test_main, skip_pre_build: "true" }
+          - { name: "ruff", python: "3.11", os: ubuntu-latest, tox: "ruff", skip_pre_build: "true" }
+          - { name: "mypy", python: "3.10", os: ubuntu-latest, tox: "mypy", skip_pre_build: "true" }
           # run some integration tests and abort immediately if they fail, for faster feedback
-          - { name: "Linux", python: "3.12", os: ubuntu-latest, tox: fail_fast_test_main, pre_build: true}
-          - { name: "3.12", python: "3.12", os: ubuntu-latest, tox: py312, pre_build: true }
-          - { name: "3.11", python: "3.11", os: ubuntu-latest, tox: py311, pre_build: true }
-          - { name: "3.10", python: "3.10", os: ubuntu-latest, tox: py310, pre_build: true }
-          - { name: "3.9", python: "3.9", os: ubuntu-latest, tox: py39, pre_build: true }
+          - { name: "Linux", python: "3.12", os: ubuntu-latest, tox: fail_fast_test_main, skip_pre_build: "true" }
+          - { name: "3.12", python: "3.12", os: ubuntu-latest, tox: py312, skip_pre_build: "true" }
+          - { name: "3.11", python: "3.11", os: ubuntu-latest, tox: py311, skip_pre_build: "true" }
+          - { name: "3.10", python: "3.10", os: ubuntu-latest, tox: py310, skip_pre_build: "true" }
+          - { name: "3.9", python: "3.9", os: ubuntu-latest, tox: py39, skip_pre_build: "true" }
 
     steps:
       - uses: actions/checkout@v4
