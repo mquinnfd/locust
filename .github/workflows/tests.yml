@@ -69,7 +69,6 @@ jobs:
           python -m poetry self add "poetry-plugin-export"
           python -m poetry export --without-hashes --format=requirements.txt > requirements.txt
           pip install -r requirements.txt
-          pip install --upgrade --force-reinstall poetry-core>=1.0.0
           pip install locust --no-index --find-links=dist
       - name: Run tox tests
         env:
