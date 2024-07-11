@@ -12,7 +12,7 @@ Install Locust for development
 Fork Locust on `GitHub <https://github.com/locustio/locust/>`_ and then run
 
 .. note::
-    Note: To build the Locust web UI, you must have `node` and `yarn` installed - see :ref:`Making changes to Locust's Web UI`
+    To build the Locust web UI, you must have `node` and `yarn` installed - see the *Making changes to Locust's Web UI* section below
 
 .. code-block:: sh
 
