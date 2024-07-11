@@ -14,16 +14,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: Windows, python: '3.12', os: windows-latest, tox: fail_fast_test_main, skip_pre_build: "false" }
-          # - {name: Mac, python: '3.12', os: macos-latest, tox: fail_fast_test_main, skip_pre_build: "true" }
-          - { name: "ruff", python: "3.11", os: ubuntu-latest, tox: "ruff", skip_pre_build: "true" }
-          - { name: "mypy", python: "3.10", os: ubuntu-latest, tox: "mypy", skip_pre_build: "true" }
+          - {name: Windows, python: '3.12', os: windows-latest, tox: fail_fast_test_main, skip_pre_build: "true" }
+          # - {name: Mac, python: '3.12', os: macos-latest, tox: fail_fast_test_main, skip_pre_build: "false" }
+          - { name: "ruff", python: "3.11", os: ubuntu-latest, tox: "ruff", skip_pre_build: "false" }
+          - { name: "mypy", python: "3.10", os: ubuntu-latest, tox: "mypy", skip_pre_build: "false" }
           # run some integration tests and abort immediately if they fail, for faster feedback
-          - { name: "Linux", python: "3.12", os: ubuntu-latest, tox: fail_fast_test_main, skip_pre_build: "true" }
-          - { name: "3.12", python: "3.12", os: ubuntu-latest, tox: py312, skip_pre_build: "true" }
-          - { name: "3.11", python: "3.11", os: ubuntu-latest, tox: py311, skip_pre_build: "true" }
-          - { name: "3.10", python: "3.10", os: ubuntu-latest, tox: py310, skip_pre_build: "true" }
-          - { name: "3.9", python: "3.9", os: ubuntu-latest, tox: py39, skip_pre_build: "true" }
+          - { name: "Linux", python: "3.12", os: ubuntu-latest, tox: fail_fast_test_main, skip_pre_build: "false" }
+          - { name: "3.12", python: "3.12", os: ubuntu-latest, tox: py312, skip_pre_build: "false" }
+          - { name: "3.11", python: "3.11", os: ubuntu-latest, tox: py311, skip_pre_build: "false" }
+          - { name: "3.10", python: "3.10", os: ubuntu-latest, tox: py310, skip_pre_build: "false" }
+          - { name: "3.9", python: "3.9", os: ubuntu-latest, tox: py39, skip_pre_build: "false" }
 
     steps:
       - uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
           pip install locust --find-links=dist
       - name: Run tox tests
         env:
-          SKIP_PRE_BUILD: ${{ matrix.pre_build }}
+          SKIP_PRE_BUILD: ${{ matrix.skip_pre_build }}
         run: python -m poetry run tox -e ${{ matrix.tox }}
 
   lint_typecheck_test_webui:
