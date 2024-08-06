@@ -112,8 +112,6 @@ jobs:
         run: |
           echo ### TARBALL WEBUI ###
           tar tf dist/*.gz
-          echo ### WHEEL WEBUI ###
-          tar tf dist/*.whl
 
       # - name: Publish prerelease version to PyPI
       #   if: ${{ env.NOT_MERGE_COMMIT == '' }}
