@@ -78,8 +78,6 @@ jobs:
 
   publish_prerelease:
     name: PyPI - Publish prerelease on merge commit on master
-    needs: tests
-    if: github.ref == 'refs/heads/master' && github.repository_owner == 'locustio'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
