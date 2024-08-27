@@ -267,7 +267,7 @@ jobs:
   publish:
     name: Publish prerelease on merge commit to master
     needs: [tox_tests, lint_typecheck_test_webui, test_docker_image]
-    if: github.repository_owner == 'locustio' && ( github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/tags') )
+    if: github.repository_owner == 'locustio' && ( github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags') )
     runs-on: ubuntu-latest
     steps:
 
@@ -335,7 +335,7 @@ jobs:
       # On commits to trunk
       - uses: borales/actions-yarn@v5
         name: Publish package on NPM
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         env:
           TAG: ${{ needs.build_package.outputs.tag }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
