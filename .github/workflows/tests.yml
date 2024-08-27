@@ -265,9 +265,7 @@ jobs:
   # -------------------------
 
   # Random change
-  # another changea
-  # Another change
-
+  # Again
 
   publish:
     name: Publish prerelease on merge commit to master
