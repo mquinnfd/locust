@@ -92,15 +92,35 @@ jobs:
       
       # Set workflow metadata in one place so we can pull it out later
       - id: set_tag
-        run: echo "tag=$(poetry version -s)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo ###
+          echo $(poetry version -s)
+          echo ###
+          echo "tag=$(poetry version -s)" >> "$GITHUB_OUTPUT"
       - id: set_tag_short
-        run: echo "tag_short=$(poetry version -s | cut -d '.' -f1-3)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo ###
+          echo $(poetry version -s | cut -d '.' -f1-3)
+          echo ###
+          echo "tag_short=$(poetry version -s | cut -d '.' -f1-3)" >> "$GITHUB_OUTPUT"
       - id: set_branch
-        run: echo "branch=$(git branch -a --contains $(poetry version -s) | grep -v HEAD | cut -d '/' -f3)" >> "$GITHUB_OUTPUT"
+        run: | 
+          echo ###
+          echo $(git branch -a --contains $(poetry version -s) | grep -v HEAD | cut -d '/' -f3)
+          echo ###
+          echo "branch=$(git branch -a --contains $(poetry version -s) | grep -v HEAD | cut -d '/' -f3)" >> "$GITHUB_OUTPUT"
       - id: set_is_merge_commit
-        run: echo "is_merge_commit=$( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )" >> "$GITHUB_OUTPUT"
+        run: |
+          echo ###
+          echo $( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )"
+          echo ###
+          echo "is_merge_commit=$( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )" >> "$GITHUB_OUTPUT"
       - id: set_python_version
-        run: echo "python_version=$(python -VV | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo ###
+          echo $(python -VV | sha256sum | cut -d' ' -f1)"
+          echo ###
+          echo "python_version=$(python -VV | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
   #-------------------------
   #       Testing
