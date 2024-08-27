@@ -270,7 +270,7 @@ jobs:
   publish:
     name: Publish prerelease on merge commit to master
     needs: build_package
-    if: github.repository_owner == 'locustio' && ( github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags') )
+    if: github.repository_owner == 'mquinnfd' && ( github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags') )
     runs-on: ubuntu-latest
     steps:
 
