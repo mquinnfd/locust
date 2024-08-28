@@ -284,6 +284,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Download Python dist artifact
+      - name: Download Python dist 
+        uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist
+
       # Download Web UI lib artifact
       - name: Download UI lib
         uses: actions/download-artifact@v4
