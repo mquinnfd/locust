@@ -305,7 +305,7 @@ jobs:
         run: |
           echo {{ env.TAG }}
           echo {{ env.TAG_SHORT }}
-          echo {{ env.BRANCH
+          echo {{ env.BRANCH }}
           echo {{ env.IS_MERGE_COMMIT }}
           echo {{ env.PYVER }}
         env:
