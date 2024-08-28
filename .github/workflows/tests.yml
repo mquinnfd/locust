@@ -107,9 +107,9 @@ jobs:
       - id: set_branch
         run: | 
           echo ###
-          echo $(git branch -a --contains $(poetry version -s) | grep -v HEAD | cut -d '/' -f3)
+          echo ${{ github.head_ref || github.ref_name }}
           echo ###
-          echo "branch=${{ github.head_ref || github.ref_name }} >> "$GITHUB_OUTPUT"
+          echo "branch=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_OUTPUT"
       - id: set_is_merge_commit
         run: |
           echo ###
@@ -298,6 +298,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      
+      # TODO: remove
+      - name: Test env
+        run: |
+          echo {{ env.TAG }}
+          echo {{ env.TAG_SHORT }}
+          echo {{ env.BRANCH
+          echo {{ env.IS_MERGE_COMMIT }}
+          echo {{ env.PYVER }}
+        env:
+          TAG: ${{ needs.build_package.outputs.tag }}
+          TAG_SHORT: ${{ needs.build_package.outputs.tag_short }}
+          BRANCH: ${{ needs.build_package.outputs.branch }}
+          IS_MERGE_COMMIT: ${{ needs.build_package.outputs.is_merge_commit }}
+          PYVER: ${{ needs.build_package.outputs.python_version }}
 
       # Download Python dist artifact
       - name: Download Python dist 
