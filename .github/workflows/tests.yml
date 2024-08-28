@@ -94,33 +94,18 @@ jobs:
       # Set workflow metadata in one place so we can pull it out later
       - id: set_tag
         run: |
-          echo ###
-          echo $(poetry version -s)
-          echo ###
           echo "tag=$(poetry version -s)" >> "$GITHUB_OUTPUT"
       - id: set_tag_short
         run: |
-          echo ###
-          echo $(poetry version -s | cut -d '.' -f1-3)
-          echo ###
           echo "tag_short=$(poetry version -s | cut -d '.' -f1-3)" >> "$GITHUB_OUTPUT"
       - id: set_branch
         run: | 
-          echo ###
-          echo ${{ github.head_ref || github.ref_name }}
-          echo ###
           echo "branch=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_OUTPUT"
       - id: set_is_merge_commit
         run: |
-          echo ###
-          echo $( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )
-          echo ###
           echo "is_merge_commit=$( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )" >> "$GITHUB_OUTPUT"
       - id: set_python_version
         run: |
-          echo ###
-          echo $(python -VV | sha256sum | cut -d' ' -f1)
-          echo ###
           echo "python_version=$(python -VV | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
   #-------------------------
@@ -299,29 +284,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      
-      # TODO: remove
-      - name: Test env
-        run: |
-          echo {{ env.TAG }}
-          echo {{ env.TAG_SHORT }}
-          echo {{ env.BRANCH }}
-          echo {{ env.IS_MERGE_COMMIT }}
-          echo {{ env.PYVER }}
-        env:
-          TAG: ${{ needs.build_package.outputs.tag }}
-          TAG_SHORT: ${{ needs.build_package.outputs.tag_short }}
-          BRANCH: ${{ needs.build_package.outputs.branch }}
-          IS_MERGE_COMMIT: ${{ needs.build_package.outputs.is_merge_commit }}
-          PYVER: ${{ needs.build_package.outputs.python_version }}
-
-      # Download Python dist artifact
-      - name: Download Python dist 
-        uses: actions/download-artifact@v4
-        with:
-          name: python-dist
-          path: dist
-
       # Download Web UI lib artifact
       - name: Download UI lib
         uses: actions/download-artifact@v4
@@ -343,8 +305,8 @@ jobs:
           images: mquinnfd/locust-test
           tags: |
             latest
-            {{ env.TAG }}
-            {{ env.BRANCH }}
+            ${{ needs.build_package.outputs.tag }}
+            ${{ needs.build_package.outputs.branch }}
             type=sha
 
       # Set up Docker daemon dependencies for building and publishing
@@ -385,7 +347,7 @@ jobs:
           TAG: ${{ needs.build_package.outputs.tag }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         with:
-          cmd: publish --no-git-tag-version --non-interactive --tag next --new-version ${{ env.TAG }}-next-${{ github.run_id }}
+          cmd: publish --no-git-tag-version --non-interactive --tag next --new-version ${{ needs.build_package.outputs.tag }}-next-${{ github.run_id }}
           dir: locust/webui
       
       # On tag builds
