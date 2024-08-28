@@ -284,21 +284,6 @@ jobs:
         with:
           fetch-depth: 0
       
-      # TODO: remove
-      - name: Test env
-        run: |
-          echo {{ env.TAG }}
-          echo {{ env.TAG_SHORT }}
-          echo {{ env.BRANCH }}
-          echo {{ env.IS_MERGE_COMMIT }}
-          echo {{ env.PYVER }}
-        env:
-          TAG: ${{ needs.build_package.outputs.tag }}
-          TAG_SHORT: ${{ needs.build_package.outputs.tag_short }}
-          BRANCH: ${{ needs.build_package.outputs.branch }}
-          IS_MERGE_COMMIT: ${{ needs.build_package.outputs.is_merge_commit }}
-          PYVER: ${{ needs.build_package.outputs.python_version }}
-
       # Download Python dist artifact
       - name: Download Python dist 
         uses: actions/download-artifact@v4
@@ -327,8 +312,8 @@ jobs:
           images: mquinnfd/locust-test
           tags: |
             latest
-            {{ env.TAG }}
-            {{ env.BRANCH }}
+            ${{ needs.build_package.outputs.tag }}
+            ${{ needs.build_package.outputs.branch }}
             type=sha
 
       # Set up Docker daemon dependencies for building and publishing
@@ -366,10 +351,9 @@ jobs:
         name: Publish package on NPM
         if: github.ref == 'refs/heads/main'
         env:
-          TAG_SHORT: ${{ needs.build_package.outputs.tag_short }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         with:
-          cmd: publish --no-git-tag-version --non-interactive --tag next --new-version ${{ env.TAG_SHORT }}-next-${{ github.run_id }}
+          cmd: publish --no-git-tag-version --non-interactive --tag next --new-version ${{ needs.build_package.outputs.tag_short }}-next-${{ github.run_id }}
           dir: locust/webui
       
       # On tag builds
