@@ -102,6 +102,8 @@ jobs:
         run: echo "is_merge_commit=$( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )" >> "$GITHUB_OUTPUT"
       - id: set_python_version
         run: echo "python_version=$(python -VV | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+      - id: set_is_tag_build
+        run: echo "is_tag_build=${{ startsWith(github.event.ref, 'refs/tags') }}" >> "$GITHUB_OUTPUT"
 
       # Set workflow metadata in one place so we can pull it out later
    
@@ -116,6 +118,7 @@ jobs:
           echo "branch: ${{ needs.build_package.outputs.branch }}"
           echo "is_merge_commit: ${{ needs.build_package.outputs.is_merge_commit }}"
           echo "python_version: ${{ needs.build_package.outputs.python_version }}"
+          echo "is_tag_build: ${{ needs.build_package.outputs.is_tag_build }}"
 
 
   #-------------------------
@@ -319,7 +322,7 @@ jobs:
         with:
           images: locustio/locust
           tags: |
-            latest
+            [ ${{ needs.build_package.outputs.is_tag_build }} == "true" ] && echo "latest"
             ${{ needs.build_package.outputs.tag }}
             ${{ needs.build_package.outputs.branch }}
 
