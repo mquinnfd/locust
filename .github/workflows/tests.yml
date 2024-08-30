@@ -110,7 +110,6 @@ jobs:
    
   pipetest:
     name: Print stuff
-    id: test_print
     runs-on: ubuntu-latest
     needs: build_package
     steps:
@@ -282,7 +281,7 @@ jobs:
 
   publish:
     name: Publish prerelease on merge commit to master
-    needs: test_print
+    needs: pipetest
     if: github.repository_owner == 'mquinnfd' && ( github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/tags') )
     runs-on: ubuntu-latest
     steps:
