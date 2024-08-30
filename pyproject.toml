@@ -3,7 +3,7 @@ requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
 build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry]
-name = "locust"
+name = "locust-test"
 description = "Developer-friendly load testing framework"
 version = "0.0.0"
 license = "MIT"

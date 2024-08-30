@@ -1,5 +1,5 @@
 {
-  "name": "locust-ui",
+  "name": "locust-test",
   "license": "MIT",
   "type": "module",
   "main": "./lib/webui.js",
