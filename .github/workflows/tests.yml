@@ -58,15 +58,15 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root --no-plugins
 
-      # # Install node and yarn in order to build the front end during packaging  
-      # - name: Set Node.js 20.x
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20.x
-      #     cache: 'yarn'
-      #     cache-dependency-path: locust/webui/yarn.lock
-      # - name: Install Yarn
-      #   run: npm install -g yarn
+      # Install node and yarn in order to build the front end during packaging  
+      - name: Set Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+          cache-dependency-path: locust/webui/yarn.lock
+      - name: Install Yarn
+        run: npm install -g yarn
 
       # Build and upload the project artifacts only once
       - name: Build Python dist and web UI
