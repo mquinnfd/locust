@@ -24,6 +24,7 @@ jobs:
       branch: ${{ steps.set_branch.outputs.branch }}
       is_merge_commit: ${{ steps.set_is_merge_commit.outputs.is_merge_commit }}
       python_version: ${{ steps.set_python_version.outputs.python_version }}
+      python_version: ${{ steps.set_is_tag_build.outputs.is_tag_build }}
     
     steps:
       - uses: actions/checkout@v4
@@ -289,7 +290,7 @@ jobs:
   publish:
     name: Publish prerelease on merge commit to master
     needs: build_package
-    if: github.repository_owner == 'locustio' && ( github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/tags') )
+    if: github.repository_owner == 'mquinnfd' && ( github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/tags') )
     runs-on: ubuntu-latest
     steps:
 
