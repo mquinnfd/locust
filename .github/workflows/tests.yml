@@ -222,14 +222,6 @@ jobs:
   #         name: python-dist
   #         path: dist
 
-  #     # Set image and tag values
-  #     - name: Docker meta
-  #       id: docker_meta
-  #       uses: docker/metadata-action@v5
-  #       with:
-  #         images: locustio/locust
-  #         tags: latest
-
   #     # Set up Docker daemon dependencies for building and publishing
   #     - name: Set up QEMU
   #       uses: docker/setup-qemu-action@v3
@@ -321,7 +313,7 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v5
         with:
-          images: locustio/locust
+          images: mquinnfd/locust
           tags: |
             type=raw,value=latest,enable=${{ needs.build_package.outputs.is_tag_build }}
             type=raw,value=${{ needs.build_package.outputs.tag }}
