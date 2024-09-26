@@ -118,6 +118,17 @@ jobs:
           echo "branch: ${{ needs.build_package.outputs.branch }}"
           echo "is_tag_build: ${{ needs.build_package.outputs.is_tag_build }}"
           echo "python_version: ${{ needs.build_package.outputs.python_version }}"
+          echo #### OTHER BUILD STUFF ####
+          echo 1
+          echo ${{ github.event.pull_request.opened }}
+          echo 2
+          echo ${{ github.ref == 'refs/heads/merge-test' }} 
+          echo 3
+          echo ${{ github.event.pull_request.merged }} 
+          echo 4
+          echo ${{ needs.build_package.outputs.is_tag_build }}
+          echo 5
+          echo ${{ github.ref == 'refs/heads/merge-test' && github.event.pull_request.merged }} 
 
   publish:
     name: Publish prerelease on merge commit to master
