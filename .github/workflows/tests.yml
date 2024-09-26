@@ -124,15 +124,15 @@ jobs:
           echo "python_version: ${{ needs.build_package.outputs.python_version }}"
           echo OTHER BUILD STUFF
           echo 1
-          echo ${{ ( github.event.pull_request.opened) == true }}
+          echo ${{ ( github.event.pull_request.opened == true ) }}
           echo 2
-          echo ${{ ( github.ref == 'refs/heads/merge-test') == true }} 
+          echo ${{ ( github.ref == 'refs/heads/merge-test' == true ) }} 
           echo 3
-          echo ${{ ( github.event.pull_request.merged ) == true}} 
+          echo ${{ ( github.event.pull_request.merged == true ) }} 
           echo 4
-          echo ${{ ( needs.build_package.outputs.is_tag_build ) == true }}
+          echo ${{ ( needs.build_package.outputs.is_tag_build == true ) }}
           echo 5
-          echo ${{ ( ( github.ref == 'refs/heads/merge-test' ) && ( github.event.pull_request.merged ) ) }} 
+          echo ${{ ( ( github.ref == 'refs/heads/merge-test' ) && ( github.event.pull_request.merged == true ) ) }} 
 
   publish:
     name: Publish prerelease on merge commit to master
