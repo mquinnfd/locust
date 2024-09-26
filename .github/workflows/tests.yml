@@ -1,6 +1,9 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+    types: [opened, reopened, closed]
 
 permissions:
   contents: read
@@ -22,7 +25,6 @@ jobs:
       tag: ${{ steps.set_tag.outputs.tag }}
       tag_short: ${{ steps.set_tag_short.outputs.tag_short }}
       branch: ${{ steps.set_branch.outputs.branch }}
-      is_merge_commit: ${{ steps.set_is_merge_commit.outputs.is_merge_commit }}
       is_tag_build: ${{ steps.set_is_tag_build.outputs.is_tag_build }}
       python_version: ${{ steps.set_python_version.outputs.python_version }}
     
@@ -99,8 +101,6 @@ jobs:
         run: echo "tag_short=$(poetry version -s | cut -d '.' -f1-3)" >> "$GITHUB_OUTPUT"
       - id: set_branch
         run: echo "branch=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_OUTPUT"
-      - id: set_is_merge_commit
-        run: echo "is_merge_commit=$( [ $(git rev-list --count $GITHUB_SHA^@) -eq 2 ] && echo 'true' || echo 'false' )" >> "$GITHUB_OUTPUT"
       - id: set_is_tag_build
         run: echo "is_tag_build=${{ startsWith(github.event.ref, 'refs/tags') }}" >> "$GITHUB_OUTPUT"
       - id: set_python_version
@@ -115,7 +115,6 @@ jobs:
           echo "tag: ${{ needs.build_package.outputs.tag }}"
           echo "tag_short: ${{ needs.build_package.outputs.tag_short }}"
           echo "branch: ${{ needs.build_package.outputs.branch }}"
-          echo "is_merge_commit: ${{ needs.build_package.outputs.is_merge_commit }}"
           echo "is_tag_build: ${{ needs.build_package.outputs.is_tag_build }}"
           echo "python_version: ${{ needs.build_package.outputs.python_version }}"
 
@@ -279,7 +278,8 @@ jobs:
   publish:
     name: Publish prerelease on merge commit to master
     needs: [tox_tests, lint_typecheck_test_webui, test_docker_image, build_package]
-    if: github.repository_owner == 'locustio' && ( github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/tags') )
+    # Only publish on PR merges to master, and tag builds
+    if: ${{ ( github.repository_owner == 'locustio' ) && ( ( github.ref == 'refs/heads/master' && github.event.pull_request.merged == true ) || ( needs.build_package.outputs.is_tag_build == true ) == true ) }}
     runs-on: ubuntu-latest
     steps:
 
