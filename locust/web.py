@@ -135,6 +135,11 @@ class WebUI:
         # ensures static js files work on Windows
         mimetypes.add_type("application/javascript", ".js")
 
+        if self.web_login:
+            self._login_manager = LoginManager()
+            self._login_manager.init_app(self.app)
+            self._login_manager.login_view = "login"
+
         if environment.runner:
             self.update_template_args()
         if not delayed_start:
@@ -145,7 +150,7 @@ class WebUI:
             error_message = str(error)
             error_code = getattr(error, "code", 500)
             logger.log(
-                logging.INFO if error_code <= 404 else logging.ERROR,
+                logging.DEBUG if error_code <= 404 else logging.ERROR,
                 f"UI got request for {request.path}, but it resulted in a {error_code}: {error.name}",
             )
             return make_response(error_message, error_code)
@@ -516,12 +521,13 @@ class WebUI:
     @property
     def login_manager(self):
         if self.web_login:
-            login_manager = LoginManager()
-            login_manager.init_app(self.app)
-            login_manager.login_view = "login"
-            return login_manager
+            return self._login_manager
 
         raise AttributeError("The login_manager is only available with --web-login.\n")
+
+    @login_manager.setter
+    def login_manager(self, value):
+        self._login_manager = value
 
     def start(self):
         self.greenlet = gevent.spawn(self.start_server)
